@@ -1,1 +1,4 @@
 theme: jekyll-theme-slate
+title: ESCORT
+description: Ethereum Smart COntRacTs Vulnerability Detection using Deep Neural Network and Transfer Learning
+markdown: kramdown
