@@ -1,4 +1,4 @@
-## Why should we care about their Smart Contract Vulnerabilty?
+## Why should we care about Smart Contract Vulnerabilty?
 
 ### What are Smart Contracts?
 
