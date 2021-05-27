@@ -1,6 +1,6 @@
 theme: jekyll-theme-slate
-title: ESCORT
-description: Ethereum Smart COntRacTs Vulnerability Detection using Deep Neural Network and Transfer Learning
+title: Smart Contract Vulnerability Detection
+description: Ethereum Smart Contracts Vulnerability Detection using Deep Neural Network and Transfer Learning
 markdown: kramdown
 github:
   is_project_page: false
