@@ -7,7 +7,7 @@
 
 Smart Contracts are computer programs that execute on a blockchain. The nature of blockchains allows one to run Smart Contracts in a trustless and decentralized environment. While different projects implement the concept of Smart Contracts, we concentrate on EVM-based blockchains and use Ethereum as our primary example, as it is the most popular, adopted, and advanced implementation. 
 
-At first glance, those Smart Contracts seem rather abstract -- code running in a VM on a blockchain. However, they provide the underlying technology in a vast and fast-growing ecosystem of [NFTs](https://www.theverge.com/22310188/nft-explainer-what-is-blockchain-crypto-art-faq "NFTs explained"), [decentralized applications](https://ethereum.org/en/dapps/ "Ethereum dApps"), and -- of course -- [CryptoKitties](https://www.cryptokitties.co/ "CryptoKitties Website"). All of those systems have an invested interest of million and even billion dollars. Ethereum itself has a market cap of over 330 billion USD. Furthermore, all of those systems use the fundamental promise of trustless execution, where no trusted 3rd parties are needed to establish trust between two strangers on the Internet.
+At first glance, those Smart Contracts seem rather abstract -- code running in a VM on a blockchain. However, they provide the underlying technology in a vast and fast-growing ecosystem of [NFTs](https://www.theverge.com/22310188/nft-explainer-what-is-blockchain-crypto-art-faq "NFTs explained"), [decentralized applications](https://ethereum.org/en/dapps/ "Ethereum dApps"), and -- of course -- [CryptoKitties](https://www.cryptokitties.co/ "CryptoKitties Website"). All of those systems have an invested interest of million and even billion dollars. Ethereum itself has a market cap of over 250 billion USD. Furthermore, all of those systems use the fundamental promise of trustless execution, where no trusted 3rd parties are needed to establish trust between two strangers on the Internet.
 
 Generally, Smart Contracts for EVM-compatible blockchains are written in a scripting language and compiled into so-called bytecode. Then, the bytecode is included in the blockchain via a transaction and executed by the miners (or validators in blockchains with stacking-based consensus algorithms). Once the bytecode is on the blockchain, everybody can see the Smart Contract's bytecode and even issue transactions to execute functionalities of them.
 
@@ -25,13 +25,33 @@ In classical Machine Learning, the training process is bound to a pre-defined se
 
 ## Our Work towards Security of Smart Contracts
 
-In our work, we demonstrate the effectiveness of Transfer Learning in the domain of Smart Contract vulnerabilities. Furthermore, we show that Transfer Learning is an extraordinary tool to facilitate cross-domain application and allow in-domain extensibility. Specifically, we propose to use Transfer Learning to express the extensibility of our Machine Learning model in regards to vulnerability classes.
+In our work, we demonstrate the effectiveness of Transfer Learning in the domain of Smart Contract vulnerabilities. Specifically, we propose to use Transfer Learning to enable the extensibility of our Machine Learning model in regards to vulnerability classes. Moreover, we show the clear benefit of Transfer Learning by successfully classifying even underrepresented vulnerability classes.
 
 ### ESCORT [1]
 
-<!--![logo](./assets/images/overview_escort.png "Project Logo" ){:width="600px" : .center}-->
+<!---->
 
-We developed a practical tool-chain to apply Transfer Learning based on vulnerability classes on Smart Contracts in this work. We first introduce ContractScraper, where Smart Contract bytecodes are extracted from the blockchain using different tools. Then, the bytecode of 1.156.611 Smart Contracts is classified by three detection tools, allowing us to label Smart Contracts with eight unique vulnerability classes. Then, we introduce ESCORT -- our classification system. First, we train our model with six different classes and use Transfer Learning to extend our model to two additional classes. Here, we achieved substantially lower inference time of 0.02s, improved training time, and a mean F1-score of 95%. ESCORT can then be used to classify bytecode in an on-the-fly manner.
+We developed a practical tool-chain to apply Transfer Learning based on vulnerability classes of Smart Contracts in this work. Our high-level execution flow can be seen in this graphic:
+
+{: .center}
+![logo](./assets/images/overview_escort.png "Overview Workflow" ){:width="600px"}
+
+We first label the smart contracts applying different smart contract vulnerability detection tools bundled in our **ContractScraper** -- each posses scan capabilities for different vulnerability types. Then, we train, test, and validate our extensible multi-label model with **ESCORT**. Suppose developers find new vulnerabilities or extend the capabilities of current tools at a later point in time. In that case, we can only train on new and underrepresented data to achieve a well-performing model. During deployment, developers can quickly test their smart contracts with **ESCORT**. 
+
+#### ContractScraper
+
+{: .center}
+![logo](./assets/images/overview_contractscraper.png "Overview ContractScraper" ){:width="600px"}
+
+The high-level flow of **ContractScraper** is straightforward. First, **ContractScraper** extracts the addresses of smart contracts and then their bytecode from the blockchain network. For this task, we included several different APIs, such as [Infura](https://infura.io/ "Infura"), [Etherscan](https://etherscan.io/ "Etherscan") and [Dedaub's Contract Library](https://contract-library.com/ "Contract Library by Dedaub"). With the plain bytecode, we scan the bytecode for vulnerabilities using [Mythril](https://github.com/ConsenSys/mythril "Mythril GitHub Repository"), [Dedaub](https://contract-library.com/ "Contract Library by Dedaub") and [Oyente](https://github.com/enzymefinance/oyente "Oyente GitHub Repository"). We also already preprocess the bytecode for Machine Learning, applying different rules to prepare the bytecode for inclusion into **ESCORT**.
+In total, the bytecode of 1.156.611 Smart Contracts is classified by the three detection tools, allowing us to label Smart Contracts with eight unique vulnerability classes. 
+
+#### ESCORT 
+
+{: .center}
+![logo](./assets/images/overview_ml.png "Overview Escort" ){:width="600px"}
+
+As seen above, our high-level model architecture consists of two parts. The first part is the *Feature Extractor*. Here, the model learns the fundamental structure of smart contract bytecode. The second part is the *Vulnerability Branches*. Here, we can extend the model with new vulnerability branches exclusive to a single vulnerability class. We train our model first with six different classes and then use Transfer Learning to extend our model to two additional classes. Here, we achieved a substantially lower inference time of 0.02s, improved training time, and a mean F1-score of 95%. ESCORT can then be used to classify bytecode in an on-the-fly manner.
 
 ## Publications
  * [1] **_ESCORT: Ethereum Smart COntRacTs Vulnerability Detection using Deep Neural Network and Transfer Learning_** by Oliver Lutz (University of Würzburg), Huili Chen ([University of California, San-Diego](https://sites.google.com/eng.ucsd.edu/huilichen/home)), Hossein Fereidooni ([TU Darmstadt](https://www.informatik.tu-darmstadt.de/systemsecurity/people_sys/people_details_sys_48576.en.jsp)), Christoph Sendner ([University of Würzburg](https://se.informatik.uni-wuerzburg.de/secure-software-systems-group/staff0/christoph-sendner/)), Alexandra Dmitrienko ([University of Würzburg](https://se.informatik.uni-wuerzburg.de/secure-software-systems-group/staff0/alexandra-dmitrienko/)), Ahmad Reza Sadeghi ([TU Darmstadt](https://www.informatik.tu-darmstadt.de/systemsecurity/people_sys/people_details_sys_45184.en.jsp)), and Farinaz Koushanfar ([University of California, San Diego](https://farinaz.eng.ucsd.edu/home)). Paper available as **[pre-print](https://arxiv.org/pdf/2103.12607.pdf)**.
