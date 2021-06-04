@@ -29,8 +29,6 @@ In our work, we demonstrate the effectiveness of Transfer Learning in the domain
 
 ### ESCORT [1]
 
-<!---->
-
 We developed a practical tool-chain to apply Transfer Learning based on vulnerability classes of Smart Contracts in this work. Our high-level execution flow can be seen in this graphic:
 
 {: .center}
