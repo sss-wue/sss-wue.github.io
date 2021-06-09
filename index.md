@@ -1,8 +1,12 @@
+---
+layout: default
+---
+
 <!-- ## Why should we care about Smart Contract Vulnerability? -->
 <!--[title](url "Hover title")-->
-{: .center}
-![logo](./assets/images/logo2.png "Project Logo" ){:width="600px" : .center}
-
+<span style="display:block;text-align:center">
+![logo](./assets/images/logo2.png "Project Logo" ){:height="400px"}
+</span>
 ## What are Smart Contracts?
 
 Smart Contracts are computer programs that execute on a blockchain. The nature of blockchains allows one to run Smart Contracts in a trustless and decentralized environment. While different projects implement the concept of Smart Contracts, we concentrate on EVM-based blockchains and use Ethereum as our primary example, as it is the most popular, adopted, and advanced implementation. 
@@ -31,23 +35,26 @@ In our work, we demonstrate the effectiveness of Transfer Learning in the domain
 
 We developed a practical tool-chain to apply Transfer Learning based on vulnerability classes of Smart Contracts in this work. Our high-level execution flow can be seen in this graphic:
 
-{: .center}
-![logo](./assets/images/overview_escort.png "Overview Workflow" ){:width="600px" : .center}
+<span style="display:block;text-align:center">
+![logo](./assets/images/overview_escort.png "Overview Workflow" ){:width="600px"}
+</span>
 
 We first label the smart contracts applying different smart contract vulnerability detection tools bundled in our **ContractScraper** -- each posses scan capabilities for different vulnerability types. Then, we train, test, and validate our extensible multi-label model with **ESCORT**. Suppose developers find new vulnerabilities or extend the capabilities of current tools at a later point in time. In that case, we can only train on new and underrepresented data to achieve a well-performing model. During deployment, developers can quickly test their smart contracts with **ESCORT**. 
 
 #### ContractScraper
 
-{: .center}
-![logo](./assets/images/overview_contractscraper.png "Overview ContractScraper" ){:width="600px" : .center}
+<span style="display:block;text-align:center">
+![logo](./assets/images/overview_contractscraper.png "Overview ContractScraper" ){:width="600px"}
+</span>
 
 The high-level flow of **ContractScraper** is straightforward. First, **ContractScraper** extracts the addresses of smart contracts and then their bytecode from the blockchain network. For this task, we included several different APIs, such as [Infura](https://infura.io/ "Infura"), [Ethereum ETL](https://github.com/blockchain-etl/ethereum-etl "Ethereum ETL GitHub") and [Dedaub's Contract Library](https://contract-library.com/ "Contract Library by Dedaub"). With the plain bytecode, we scan the bytecode for vulnerabilities using [Mythril](https://github.com/ConsenSys/mythril "Mythril GitHub Repository"), [Dedaub](https://contract-library.com/ "Contract Library by Dedaub") and [Oyente](https://github.com/enzymefinance/oyente "Oyente GitHub Repository"). We also already preprocess the bytecode for Machine Learning, applying different rules to prepare the bytecode for inclusion into **ESCORT**.
 In total, the bytecode of 1.156.611 Smart Contracts is classified by the three detection tools, allowing us to label Smart Contracts with eight unique vulnerability classes. 
 
 #### ESCORT 
 
-{: .center}
-![logo](./assets/images/overview_ml.png "Overview Escort" ){:width="600px" : .center}
+<span style="display:block;text-align:center">
+![logo](./assets/images/overview_ml.png "Overview Escort" ){:width="600px"}
+</span>
 
 As seen above, our high-level model architecture consists of two parts. The first part is the *Feature Extractor*. Here, the model learns the fundamental structure of smart contract bytecode. The second part is the *Vulnerability Branches*. Here, we can extend the model with new vulnerability branches exclusive to a single vulnerability class. We train our model first with six different classes and then use Transfer Learning to extend our model to two additional classes. Here, we achieved a substantially lower inference time of 0.02s, improved training time, and a mean F1-score of 95%. ESCORT can then be used to classify bytecode in an on-the-fly manner.
 
